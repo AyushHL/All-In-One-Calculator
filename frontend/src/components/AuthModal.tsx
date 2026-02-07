@@ -124,7 +124,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={onClose}
       >
         <motion.div
@@ -132,7 +132,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           transition={{ type: 'spring', duration: 0.5 }}
-          className="glass-morphism rounded-3xl w-full max-w-md p-8 relative my-8 max-h-[90vh] overflow-y-auto"
+          className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
