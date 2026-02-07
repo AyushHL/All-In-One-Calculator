@@ -32,7 +32,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
     setNotification({ show: false, message: '', type: 'success' });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/support/send', formData);
+      await axios.post('http://localhost:5000/api/support/send', formData);
 
       setNotification({
         show: true,

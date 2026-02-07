@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Image, Check, AlertCircle, Upload } from 'lucide-react';
+import { X, User, Check, AlertCircle, Upload } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 

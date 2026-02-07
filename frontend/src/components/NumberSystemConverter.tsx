@@ -90,7 +90,6 @@ const NumberSystemConverter: React.FC = () => {
   };
 
   const getPlaceholder = () => {
-    const system = numberSystems.find(ns => ns.value === fromBase);
     switch (fromBase) {
       case '2':
         return 'e.g., 1010';

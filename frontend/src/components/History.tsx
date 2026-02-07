@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Clock, Calculator, Calendar, Activity, ArrowRightLeft, X, Hash } from 'lucide-react';
+import { Trash2, Clock, Calculator, Calendar, Activity, ArrowRightLeft, Hash } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const History: React.FC = () => {

@@ -6,7 +6,6 @@ import {
   Calculator, 
   Calendar, 
   Activity, 
-  BookText, 
   History as HistoryIcon, 
   ChevronRight,
   Hash,

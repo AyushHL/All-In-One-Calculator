@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Delete } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 // Basic Calculator - Simple arithmetic operations

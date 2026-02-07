@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Delete, Divide, Percent, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { evaluate } from 'mathjs';
 import { useApp } from '../context/AppContext';
 

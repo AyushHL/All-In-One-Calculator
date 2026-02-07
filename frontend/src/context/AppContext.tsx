@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import axios from 'axios';
 
 interface User {
-  id: string;
+  id?: string;
   email: string;
   notepad: string;
   username?: string;
@@ -21,6 +21,7 @@ interface AppContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   token: string | null;
+  setToken: (token: string | null) => void;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -168,6 +169,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         user,
         setUser,
         token,
+        setToken,
         login,
         register,
         logout,

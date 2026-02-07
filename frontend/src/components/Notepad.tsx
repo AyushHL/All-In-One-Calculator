@@ -7,8 +7,7 @@ import axios from 'axios';
 const Notepad: React.FC = () => {
   const { notepad, setNotepad, saveNotepad, user } = useApp();
   const [saved, setSaved] = useState(false);
-  const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
-  const [showTitleModal, setShowTitleModal] = useState(false);
+  const [autoSaveTimer, setAutoSaveTimer] = useState<number | null>(null);\n  const [showTitleModal, setShowTitleModal] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
   const [saving, setSaving] = useState(false);
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({show: false, message: '', type: 'success'});
