@@ -156,7 +156,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={onClose}
-        style={{ pointerEvents: 'auto' }}
       >
         <motion.div
           initial={{ scale: 0.9, y: 20 }}
@@ -165,7 +164,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
           transition={{ type: 'spring', duration: 0.5 }}
           className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
           onClick={(e) => e.stopPropagation()}
-          style={{ pointerEvents: 'auto' }}
         >
           {/* Close Button */}
           <button
