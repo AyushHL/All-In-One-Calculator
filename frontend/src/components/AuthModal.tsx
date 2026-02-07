@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface AuthModalProps {
   onClose: () => void;
 }
@@ -51,7 +53,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
   const handleGoogleLogin = () => {
     // Redirect to backend Google OAuth endpoint
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -61,7 +63,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -88,7 +90,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
+      const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, token: resetToken, newPassword })

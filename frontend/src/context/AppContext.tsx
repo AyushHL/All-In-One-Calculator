@@ -55,8 +55,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [notepad, setNotepad] = useState<string>('');
 
+  // Set API base URL from environment variable
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
   // Configure axios defaults
   useEffect(() => {
+    axios.defaults.baseURL = API_URL;
     if (token) {
       axios.defaults.headers.common['x-auth-token'] = token;
       loadUserData();
