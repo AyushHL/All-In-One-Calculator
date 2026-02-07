@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Phone, Mail, MessageSquare, Send, Check, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface SupportModalProps {
   onClose: () => void;
 }
@@ -32,7 +34,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
     setNotification({ show: false, message: '', type: 'success' });
 
     try {
-      await axios.post('/api/support/send', formData);
+      await axios.post(`${API_URL}/api/support/send`, formData);
 
       setNotification({
         show: true,
@@ -70,6 +72,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={onClose}
+        style={{ pointerEvents: 'auto' }}
       >
         <motion.div
           initial={{ scale: 0.9, y: 20 }}
@@ -78,6 +81,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
           transition={{ type: 'spring', duration: 0.5 }}
           className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
           onClick={(e) => e.stopPropagation()}
+          style={{ pointerEvents: 'auto' }}
         >
           {/* Close Button */}
           <button
