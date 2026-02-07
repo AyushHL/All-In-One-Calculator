@@ -4,8 +4,6 @@ import { Save, Check, X, BookmarkPlus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 const Notepad: React.FC = () => {
   const { notepad, setNotepad, saveNotepad, user } = useApp();
   const [saved, setSaved] = useState(false);

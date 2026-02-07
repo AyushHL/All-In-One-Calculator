@@ -4,8 +4,6 @@ import { BookText, Plus, Trash2, Edit2, Check, X, Calendar } from 'lucide-react'
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 interface Note {
   _id: string;
   title: string;
