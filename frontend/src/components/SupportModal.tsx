@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Phone, Mail, MessageSquare, Send, Check, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface SupportModalProps {
   onClose: () => void;
 }
@@ -32,7 +34,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
     setNotification({ show: false, message: '', type: 'success' });
 
     try {
-      await axios.post('http://localhost:5000/api/support/send', formData);
+      await axios.post('/api/support/send', formData);
 
       setNotification({
         show: true,

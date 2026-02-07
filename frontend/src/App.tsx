@@ -16,6 +16,8 @@ import ProfileModal from './components/ProfileModal';
 import SupportModal from './components/SupportModal';
 import { useApp } from './context/AppContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function App() {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem('activeTab') || 'basic';
@@ -54,7 +56,7 @@ function App() {
         setToken(token);
         
         // Fetch full user data from backend
-        fetch('http://localhost:5000/api/auth/user', {
+        fetch(`${API_URL}/api/auth/user`, {
           headers: { 'x-auth-token': token }
         })
           .then(res => res.json())
@@ -138,7 +140,7 @@ function App() {
               >
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden">
                   {user?.picture ? (
-                    <img src={`http://localhost:5000${user.picture}`} alt="Profile" className="w-full h-full object-cover" />
+                    <img src={`${API_URL}${user.picture}`} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
                     <User size={20} />
                   )}

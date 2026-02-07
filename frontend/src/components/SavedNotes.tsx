@@ -4,6 +4,8 @@ import { BookText, Plus, Trash2, Edit2, Check, X, Calendar } from 'lucide-react'
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface Note {
   _id: string;
   title: string;
@@ -26,7 +28,7 @@ const SavedNotes: React.FC = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/notes', {
+      const response = await axios.get('/api/notes', {
         headers: { 'x-auth-token': token }
       });
       setNotes(response.data);
@@ -61,7 +63,7 @@ const SavedNotes: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/notes', {
+      await axios.post('/api/notes', {
         title: newTitle,
         content: newContent,
       }, {
@@ -84,7 +86,7 @@ const SavedNotes: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/notes/${id}`, { title, content }, {
+      await axios.put(`/api/notes/${id}`, { title, content }, {
         headers: { 'x-auth-token': token }
       });
       setEditingId(null);
@@ -108,7 +110,7 @@ const SavedNotes: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/notes/${deleteConfirm.noteId}`, {
+      await axios.delete(`/api/notes/${deleteConfirm.noteId}`, {
         headers: { 'x-auth-token': token }
       });
       await fetchNotes();

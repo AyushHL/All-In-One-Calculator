@@ -4,6 +4,8 @@ import { X, User, Check, AlertCircle, Upload } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface ProfileModalProps {
   onClose: () => void;
 }
@@ -22,7 +24,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     if (user) {
       setUsername(user.username || '');
       if (user.picture) {
-        setPreviewUrl(`http://localhost:5000${user.picture}`);
+        setPreviewUrl(`${API_URL}${user.picture}`);
       }
     }
   }, [user]);
@@ -69,7 +71,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.delete(
-        'http://localhost:5000/api/auth/profile/picture',
+        '/api/auth/profile/picture',
         {
           headers: { 'x-auth-token': token }
         }
@@ -115,7 +117,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       }
 
       const response = await axios.put(
-        'http://localhost:5000/api/auth/profile',
+        '/api/auth/profile',
         formData,
         {
           headers: {
