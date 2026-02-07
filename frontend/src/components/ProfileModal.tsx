@@ -162,7 +162,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           transition={{ type: 'spring', duration: 0.5 }}
-          className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
+          className="glass-morphism rounded-3xl w-full max-w-md p-8 relative"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
@@ -240,11 +240,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  disabled={loading}
-                  className="input-field w-full pl-12 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="input-field w-full pl-12"
                   placeholder="Enter your username"
                   maxLength={30}
-                  autoComplete="off"
                 />
               </div>
             </div>
