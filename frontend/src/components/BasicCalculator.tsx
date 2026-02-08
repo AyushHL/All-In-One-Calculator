@@ -113,6 +113,14 @@ const BasicCalculator: React.FC = () => {
   // Keyboard support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if focus is on an input or textarea
+      if (
+        document.activeElement instanceof HTMLInputElement ||
+        document.activeElement instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
       e.preventDefault();
       
       const key = e.key;
