@@ -207,13 +207,19 @@ function App() {
       </main>
 
       {/* Auth Modal */}
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      <AnimatePresence>
+        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      </AnimatePresence>
 
       {/* Profile Modal */}
-      {showProfileModal && <ProfileModal onClose={() => setShowProfileModal(false)} />}
+      <AnimatePresence>
+        {showProfileModal && <ProfileModal onClose={() => setShowProfileModal(false)} />}
+      </AnimatePresence>
 
       {/* Support Modal */}
-      {showSupport && <SupportModal onClose={() => setShowSupport(false)} />}
+      <AnimatePresence>
+        {showSupport && <SupportModal onClose={() => setShowSupport(false)} />}
+      </AnimatePresence>
 
       {/* Background Effects */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">

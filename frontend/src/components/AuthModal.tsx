@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -119,22 +119,21 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   };
 
   return (
-    <AnimatePresence>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        onClick={onClose}
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ type: 'spring', duration: 0.5 }}
+        className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
+        onClick={(e) => e.stopPropagation()}
       >
-        <motion.div
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
-          transition={{ type: 'spring', duration: 0.5 }}
-          className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
-          onClick={(e) => e.stopPropagation()}
-        >
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -466,7 +465,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
   );
 };
 
