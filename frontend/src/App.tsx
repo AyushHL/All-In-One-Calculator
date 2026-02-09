@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, LogOut, Settings } from 'lucide-react';
+import { User, LogOut, Settings, Headphones } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import BasicCalculator from './components/BasicCalculator';
 import Scientific from './components/Scientific';
@@ -205,6 +205,15 @@ function App() {
           <Notepad />
         </div>
       </main>
+
+      {/* Mobile Support Button */}
+      <button
+        onClick={() => setShowSupport(true)}
+        className="fixed bottom-4 right-4 z-40 md:hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-xl px-5 py-3 flex items-center gap-2 active:scale-95 transition-transform"
+      >
+        <Headphones size={20} />
+        <span className="font-medium">Support</span>
+      </button>
 
       {/* Auth Modal */}
       <AnimatePresence>
