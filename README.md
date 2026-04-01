@@ -2,6 +2,8 @@
 
 A modern, full-featured calculator application built with **MERN Stack** (MongoDB, Express, React, Node.js) + **TypeScript** + **Vite**.
 
+**Live App:** [Live](https://allinonecalculatorhub.netlify.app/)
+
 ## ✨ Features
 
 ### 🧮 Calculators
