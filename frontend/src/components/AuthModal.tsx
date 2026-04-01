@@ -405,13 +405,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
             {/* Divider */}
             {!isForgotPassword && (
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-600"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-slate-800/50 text-slate-400">Or continue with</span>
-                </div>
+              <div className="flex items-center my-6 gap-1">
+                <div className="flex-1 border-t border-slate-600"></div>
+                <span className="px-4 py-1 text-sm bg-slate-800/30 text-slate-400 rounded-full">Or continue with</span>
+                <div className="flex-1 border-t border-slate-600"></div>
               </div>
             )}
 
