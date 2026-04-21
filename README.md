@@ -64,7 +64,7 @@ JWT_SECRET=your_secret_key_here
 
 # Email configuration
 EMAIL_SERVICE=gmail
-EMAIL_USER=calculatorhub.noreply@gmail.com
+EMAIL_USER=your_email@gmail.com
 EMAIL_PASSWORD=your_app_password
 
 # Google OAuth
