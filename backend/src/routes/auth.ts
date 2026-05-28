@@ -4,34 +4,21 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import passport from 'passport';
 import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import User from '../models/User.js';
 import auth, { AuthRequest } from '../middleware/auth.js';
 import { sendPasswordResetOTP } from '../utils/emailService.js';
 
 const router = express.Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../uploads/'));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'profile-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Configure multer for file uploads (memory storage - files stored as Base64 in DB)
+const storage = multer.memoryStorage();
 
 // File filter for images only
 const fileFilter = (req: any, file: any, cb: any) => {
   const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
   
-  if (mimetype && extname) {
+  if (mimetype) {
     return cb(null, true);
   } else {
     cb(new Error('Only image files are allowed!'));
@@ -301,7 +288,9 @@ router.put('/profile', auth, upload.single('picture'), async (req: AuthRequest, 
       user.username = username.trim();
     }
     if (req.file) {
-      user.picture = `/uploads/${req.file.filename}`;
+      // Convert buffer to Base64 data URL and store in DB
+      const base64 = req.file.buffer.toString('base64');
+      user.picture = `data:${req.file.mimetype};base64,${base64}`;
     }
 
     await user.save();

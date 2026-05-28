@@ -24,7 +24,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     if (user) {
       setUsername(user.username || '');
       if (user.picture) {
-        setPreviewUrl(`${API_URL}${user.picture}`);
+        setPreviewUrl(user.picture);
       }
     }
   }, [user]);

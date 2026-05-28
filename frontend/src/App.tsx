@@ -140,7 +140,7 @@ function App() {
               >
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden">
                   {user?.picture ? (
-                    <img src={`${API_URL}${user.picture}`} alt="Profile" className="w-full h-full object-cover" />
+                    <img src={user.picture} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
                     <User size={20} />
                   )}
