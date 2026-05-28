@@ -77,7 +77,7 @@ GOOGLE_CLIENT_SECRET=your_client_secret
 ```powershell
 # Terminal 1: Start backend
 cd backend
-node src/server.js
+npm run dev
 # Server runs on http://localhost:5000
 
 # Terminal 2: Start frontend
@@ -96,7 +96,7 @@ backend/
 │   ├── middleware/    # JWT authentication
 │   ├── config/        # Database & Passport configuration
 │   ├── utils/         # Email service
-│   └── server.js      # Express server
+│   └── server.ts      # Express server (TypeScript)
 ├── uploads/           # Profile pictures
 └── .env               # Environment variables
 
@@ -126,7 +126,7 @@ frontend/
 ## 🛠️ Tech Stack
 
 **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Framer Motion, Lucide Icons, Math.js, Axios  
-**Backend**: Node.js, Express, MongoDB, Mongoose, JWT, bcryptjs, Nodemailer, Passport.js, Multer
+**Backend**: Node.js, Express, TypeScript, MongoDB, Mongoose, JWT, bcryptjs, Nodemailer, Passport.js, Multer
 
 ## 📝 API Endpoints
 
