@@ -4,7 +4,6 @@ import { X, User, Check, AlertCircle, Upload } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 interface ProfileModalProps {
   onClose: () => void;
