@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Hash } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import CustomSelect from './CustomSelect';
 
 const NumberSystemConverter: React.FC = () => {
   const [fromBase, setFromBase] = useState('10');
@@ -125,17 +126,13 @@ const NumberSystemConverter: React.FC = () => {
         className="mb-6"
       >
         <label className="block text-sm font-medium text-slate-300 mb-2">From</label>
-        <select
+        <CustomSelect
           value={fromBase}
-          onChange={(e) => setFromBase(e.target.value)}
+          onChange={setFromBase}
+          options={numberSystems}
+          theme="indigo"
           className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-indigo-500/50 transition-all"
-        >
-          {numberSystems.map((system) => (
-            <option key={system.value} value={system.value} className="bg-slate-800">
-              {system.label}
-            </option>
-          ))}
-        </select>
+        />
       </motion.div>
 
       {/* Input */}
@@ -180,17 +177,13 @@ const NumberSystemConverter: React.FC = () => {
         className="mb-6"
       >
         <label className="block text-sm font-medium text-slate-300 mb-2">To</label>
-        <select
+        <CustomSelect
           value={toBase}
-          onChange={(e) => setToBase(e.target.value)}
+          onChange={setToBase}
+          options={numberSystems}
+          theme="indigo"
           className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-purple-500/50 transition-all"
-        >
-          {numberSystems.map((system) => (
-            <option key={system.value} value={system.value} className="bg-slate-800">
-              {system.label}
-            </option>
-          ))}
-        </select>
+        />
       </motion.div>
 
       {/* Result */}

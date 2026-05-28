@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRightLeft } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 import { useApp } from '../context/AppContext';
 
 const Converter: React.FC = () => {
@@ -129,17 +130,16 @@ const Converter: React.FC = () => {
                 className="input-field text-lg"
                 placeholder="Enter value"
               />
-              <select
+              <CustomSelect
                 value={fromUnit}
-                onChange={(e) => setFromUnit(e.target.value)}
-                className="input-field text-lg capitalize"
-              >
-                {conversions[category].units.map((unit: string) => (
-                  <option key={unit} value={unit} className="bg-slate-800">
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                onChange={setFromUnit}
+                options={conversions[category].units.map((unit: string) => ({
+                  value: unit,
+                  label: unit.charAt(0).toUpperCase() + unit.slice(1),
+                }))}
+                theme={category === 'length' ? 'orange' : category === 'temperature' ? 'cyan' : 'indigo'}
+                className="input-field w-full text-lg capitalize"
+              />
             </div>
           </div>
 
@@ -166,17 +166,16 @@ const Converter: React.FC = () => {
                 className="input-field text-lg bg-white/10"
                 placeholder="Result"
               />
-              <select
+              <CustomSelect
                 value={toUnit}
-                onChange={(e) => setToUnit(e.target.value)}
-                className="input-field text-lg capitalize"
-              >
-                {conversions[category].units.map((unit: string) => (
-                  <option key={unit} value={unit} className="bg-slate-800">
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                onChange={setToUnit}
+                options={conversions[category].units.map((unit: string) => ({
+                  value: unit,
+                  label: unit.charAt(0).toUpperCase() + unit.slice(1),
+                }))}
+                theme={category === 'length' ? 'orange' : category === 'temperature' ? 'cyan' : 'indigo'}
+                className="input-field w-full text-lg capitalize"
+              />
             </div>
           </div>
         </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cake, Calendar as CalendarIcon, Gift } from 'lucide-react';
+import { Calendar as CalendarIcon, Cake, Gift } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import CustomDatePicker from './CustomDatePicker';
 
 const AgeCalculator: React.FC = () => {
   const [birthDate, setBirthDate] = useState('');
@@ -87,12 +88,11 @@ const AgeCalculator: React.FC = () => {
           <label className="block text-sm font-medium text-slate-300 mb-2">
             Date of Birth
           </label>
-          <input
-            type="date"
+          <CustomDatePicker
             value={birthDate}
-            onChange={(e) => setBirthDate(e.target.value)}
+            onChange={setBirthDate}
             max={new Date().toISOString().split('T')[0]}
-            className="input-field w-full text-lg"
+            className="input-field w-full text-lg uppercase"
           />
         </div>
 
