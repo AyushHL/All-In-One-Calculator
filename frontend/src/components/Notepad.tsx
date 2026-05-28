@@ -11,6 +11,7 @@ const Notepad: React.FC = () => {
   const [showTitleModal, setShowTitleModal] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
   const [saving, setSaving] = useState(false);
+  const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({show: false, message: '', type: 'success'});
 
   useEffect(() => {
@@ -19,12 +20,21 @@ const Notepad: React.FC = () => {
       clearTimeout(autoSaveTimer);
     }
 
-    if (user && notepad) {
-      const timer = setTimeout(() => {
-        saveNotepad().catch(err => console.error('Auto-save failed:', err));
+    if (user && notepad !== undefined) {
+      const timer = window.setTimeout(async () => {
+        setIsAutoSaving(true);
+        try {
+          await saveNotepad();
+          setSaved(true);
+          setTimeout(() => setSaved(false), 2000);
+        } catch (err) {
+          console.error('Auto-save failed:', err);
+        } finally {
+          setIsAutoSaving(false);
+        }
       }, 2000);
       
-      setAutoSaveTimer(timer);
+      setAutoSaveTimer(timer as unknown as number);
     }
 
     return () => {
@@ -156,9 +166,11 @@ const Notepad: React.FC = () => {
         <div className="mt-4 pt-4 border-t border-white/10">
           <p className="text-xs text-slate-400 text-center">
             {user 
-              ? saved 
-                ? '✓ Saved to database' 
-                : 'Auto-saving...'
+              ? isAutoSaving
+                ? 'Saving...'
+                : saved 
+                  ? '✓ Saved to Database' 
+                  : 'Auto-saves as you type'
               : 'Sign in to save notes'
             }
           </p>
