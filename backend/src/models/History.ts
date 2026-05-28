@@ -1,4 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+
+export interface IHistory extends Document {
+  userId: mongoose.Types.ObjectId;
+  type: string;
+  expression: string;
+  result: string;
+  createdAt: Date;
+}
 
 const HistorySchema = new mongoose.Schema({
   userId: { 
@@ -24,4 +32,4 @@ const HistorySchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('History', HistorySchema);
+export default mongoose.model<IHistory>('History', HistorySchema);

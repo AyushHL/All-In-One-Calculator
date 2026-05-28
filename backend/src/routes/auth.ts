@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
@@ -7,7 +7,7 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import User from '../models/User.js';
-import auth from '../middleware/auth.js';
+import auth, { AuthRequest } from '../middleware/auth.js';
 import { sendPasswordResetOTP } from '../utils/emailService.js';
 
 const router = express.Router();
@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 });
 
 // File filter for images only
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req: any, file: any, cb: any) => {
   const allowedTypes = /jpeg|jpg|png|gif|webp/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
@@ -47,7 +47,7 @@ const upload = multer({
 // @route   POST /api/auth/register
 // @desc    Register new user
 // @access  Public
-router.post('/register', async (req, res) => {
+router.post('/register', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     
@@ -115,7 +115,7 @@ router.post('/register', async (req, res) => {
 // @route   POST /api/auth/login
 // @desc    Login user
 // @access  Public
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -131,7 +131,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Validate password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password || '');
     if (!isMatch) {
       return res.status(400).json({ msg: "Wrong password" });
     }
@@ -160,7 +160,7 @@ router.post('/login', async (req, res) => {
 // @route   GET /api/auth/user
 // @desc    Get user data
 // @access  Private
-router.get('/user', auth, async (req, res) => {
+router.get('/user', auth, async (req: AuthRequest, res: Response) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
@@ -172,7 +172,7 @@ router.get('/user', auth, async (req, res) => {
 // @route   POST /api/auth/forgot-password
 // @desc    Request password reset token
 // @access  Public
-router.post('/forgot-password', async (req, res) => {
+router.post('/forgot-password', async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
@@ -194,7 +194,7 @@ router.post('/forgot-password', async (req, res) => {
 
     // Save token and expiry (15 minutes)
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
+    user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
     await user.save();
 
     // Send OTP via email
@@ -230,7 +230,7 @@ router.post('/forgot-password', async (req, res) => {
 // @route   POST /api/auth/reset-password
 // @desc    Reset password using token
 // @access  Public
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password', async (req: Request, res: Response) => {
   try {
     const { email, token, newPassword } = req.body;
 
@@ -273,8 +273,8 @@ router.post('/reset-password', async (req, res) => {
     user.password = await bcrypt.hash(newPassword, salt);
 
     // Clear reset token fields
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
     await user.save();
 
     res.json({ message: "Password reset successful! You can now log in." });
@@ -287,7 +287,7 @@ router.post('/reset-password', async (req, res) => {
 // @route   PUT /api/auth/profile
 // @desc    Update user profile (username and picture)
 // @access  Private
-router.put('/profile', auth, upload.single('picture'), async (req, res) => {
+router.put('/profile', auth, upload.single('picture'), async (req: AuthRequest, res: Response) => {
   try {
     const { username } = req.body;
 
@@ -317,14 +317,14 @@ router.put('/profile', auth, upload.single('picture'), async (req, res) => {
     });
   } catch (err) {
     console.error('Profile update error:', err);
-    res.status(500).json({ msg: err.message || "Server error" });
+    res.status(500).json({ msg: (err as Error).message || "Server error" });
   }
 });
 
 // @route   DELETE /api/auth/profile/picture
 // @desc    Remove user profile picture
 // @access  Private
-router.delete('/profile/picture', auth, async (req, res) => {
+router.delete('/profile/picture', auth, async (req: AuthRequest, res: Response) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -347,7 +347,7 @@ router.delete('/profile/picture', auth, async (req, res) => {
     });
   } catch (err) {
     console.error('Remove picture error:', err);
-    res.status(500).json({ msg: err.message || "Server error" });
+    res.status(500).json({ msg: (err as Error).message || "Server error" });
   }
 });
 
@@ -363,7 +363,7 @@ router.get('/google',
 // @access  Public
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
+  (req: any, res: any) => {
     try {
       // Create JWT token for the user
       const token = jwt.sign(

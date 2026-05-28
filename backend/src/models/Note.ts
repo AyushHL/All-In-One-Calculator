@@ -1,4 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+
+export interface INote extends Document {
+  userId: mongoose.Types.ObjectId;
+  title: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const noteSchema = new mongoose.Schema({
   userId: {
@@ -19,4 +27,4 @@ const noteSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.model('Note', noteSchema);
+export default mongoose.model<INote>('Note', noteSchema);

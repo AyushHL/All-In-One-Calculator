@@ -1,11 +1,11 @@
-import express from 'express';
+import express, { Response } from 'express';
 import Note from '../models/Note.js';
-import auth from '../middleware/auth.js';
+import auth, { AuthRequest } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Get all notes for logged-in user
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     const notes = await Note.find({ userId: req.user.id })
       .sort({ updatedAt: -1 });
@@ -17,7 +17,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // Create a new note
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     const { title, content } = req.body;
 
@@ -40,7 +40,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Update a note
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, async (req: AuthRequest, res: Response) => {
   try {
     const { title, content } = req.body;
     const note = await Note.findOne({ _id: req.params.id, userId: req.user.id });
@@ -61,7 +61,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // Delete a note
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req: AuthRequest, res: Response) => {
   try {
     const note = await Note.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
 

@@ -12,7 +12,7 @@ const createTransporter = () => {
 };
 
 // Send OTP email for password reset
-export const sendPasswordResetOTP = async (email, otp) => {
+export const sendPasswordResetOTP = async (email: string, otp: string) => {
   try {
     const transporter = createTransporter();
 
@@ -141,7 +141,7 @@ export const sendPasswordResetOTP = async (email, otp) => {
 };
 
 // Send welcome email (optional)
-export const sendWelcomeEmail = async (email) => {
+export const sendWelcomeEmail = async (email: string) => {
   try {
     const transporter = createTransporter();
 

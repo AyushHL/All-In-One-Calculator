@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
 
 const router = express.Router();
@@ -6,7 +6,7 @@ const router = express.Router();
 // @route   POST /api/support/send
 // @desc    Send support email
 // @access  Public
-router.post('/send', async (req, res) => {
+router.post('/send', async (req: Request, res: Response) => {
   try {
     const { name, mobile, email, description } = req.body;
 

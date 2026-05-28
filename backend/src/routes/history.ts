@@ -1,13 +1,13 @@
-import express from 'express';
+import express, { Response } from 'express';
 import History from '../models/History.js';
-import auth from '../middleware/auth.js';
+import auth, { AuthRequest } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // @route   GET /api/history
 // @desc    Get user calculation history
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     const history = await History.find({ userId: req.user.id })
       .sort({ createdAt: -1 })
@@ -22,7 +22,7 @@ router.get('/', auth, async (req, res) => {
 // @route   POST /api/history
 // @desc    Add new calculation to history
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     const { type, expression, result } = req.body;
 
@@ -44,7 +44,7 @@ router.post('/', auth, async (req, res) => {
 // @route   DELETE /api/history/:id
 // @desc    Delete specific history entry
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req: AuthRequest, res: Response) => {
   try {
     const history = await History.findById(req.params.id);
     
@@ -68,7 +68,7 @@ router.delete('/:id', auth, async (req, res) => {
 // @route   DELETE /api/history
 // @desc    Clear all user history
 // @access  Private
-router.delete('/', auth, async (req, res) => {
+router.delete('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     await History.deleteMany({ userId: req.user.id });
     res.json({ msg: "All history cleared" });

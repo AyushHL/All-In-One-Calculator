@@ -61,7 +61,7 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/support', supportRoutes);
 
 // Health check route
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (req: express.Request, res: express.Response) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
