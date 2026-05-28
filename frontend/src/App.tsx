@@ -44,17 +44,17 @@ function App() {
     if (token && email) {
       // Store token
       localStorage.setItem('token', token);
-      
+
       // Set a flag to prevent infinite reload
       const isReloading = sessionStorage.getItem('oauth_reload');
-      
+
       if (!isReloading) {
         sessionStorage.setItem('oauth_reload', 'true');
         window.location.href = '/';
       } else {
         sessionStorage.removeItem('oauth_reload');
         setToken(token);
-        
+
         // Fetch full user data from backend
         fetch(`${API_URL}/api/auth/user`, {
           headers: { 'x-auth-token': token }
@@ -122,7 +122,7 @@ function App() {
         <div className="flex-1 flex flex-col p-4 md:p-8 overflow-y-auto">
           {/* Header */}
           <header className="flex justify-between items-center mb-6">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="text-2xl md:text-3xl font-bold text-gradient"
@@ -136,9 +136,9 @@ function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => user ? setShowUserMenu(!showUserMenu) : setShowAuth(true)}
-                className="flex items-center gap-3 px-4 py-2 glass-morphism rounded-full hover:bg-white/10 transition-all"
+                className="flex items-center gap-3 pl-2.5 pr-4 py-2 glass-morphism rounded-full hover:bg-white/10 transition-all"
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shrink-0">
                   {user?.picture ? (
                     <img src={user.picture} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
