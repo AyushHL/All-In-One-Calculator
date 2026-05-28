@@ -53,11 +53,11 @@ app.use('/api/support', supportRoutes);
 
 // Health check route
 app.get('/api/health', (req: express.Request, res: express.Response) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+  res.json({ status: 'OK', message: 'Server is Running' });
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on Port ${PORT}`);
 });
