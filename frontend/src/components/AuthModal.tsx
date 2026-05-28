@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { X, Mail, Lock, User, AlertCircle, Key } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -14,7 +14,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [resetToken, setResetToken] = useState('');
+  const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -47,7 +47,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setSuccess('');
     setEmail('');
     setPassword('');
-    setResetToken('');
+    setOtp('');
     setNewPassword('');
   };
 
@@ -72,10 +72,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to send reset token');
+        throw new Error(data.message || 'Failed to send OTP');
       }
 
-      setSuccess('Reset token sent! Check your email.');
+      setSuccess('OTP sent! Check your email.');
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -93,7 +93,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
       const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, token: resetToken, newPassword })
+        body: JSON.stringify({ email, otp, newPassword })
       });
 
       const data = await response.json();
@@ -107,7 +107,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         setIsForgotPassword(false);
         setIsLogin(true);
         setEmail('');
-        setResetToken('');
+        setOtp('');
         setNewPassword('');
         setSuccess('');
       }, 2000);
@@ -156,7 +156,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               {isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create Account'}
             </h2>
             <p className="text-slate-400">
-              {isForgotPassword ? 'Enter your email to receive a reset token' : isLogin ? 'Sign in to access your calculators' : 'Join to save your calculations'}
+              {isForgotPassword ? 'Enter your email to receive an OTP' : isLogin ? 'Sign in to access your calculators' : 'Join to save your calculations'}
             </p>
           </div>
 
@@ -207,16 +207,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Reset Token
+                    OTP
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                    <Key className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
                       type="text"
-                      value={resetToken}
-                      onChange={(e) => setResetToken(e.target.value)}
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
                       className="input-field w-full pl-12"
-                      placeholder="Enter token from email"
+                      placeholder="Enter OTP from email"
                       required
                     />
                   </div>
@@ -307,7 +307,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                       Processing...
                     </span>
                   ) : (
-                    'Send Reset Token'
+                    'Send OTP'
                   )}
                 </motion.button>
               </form>
@@ -441,7 +441,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                   setIsForgotPassword(false);
                   setError('');
                   setSuccess('');
-                  setResetToken('');
+                  setOtp('');
                   setNewPassword('');
                 }}
                 className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"

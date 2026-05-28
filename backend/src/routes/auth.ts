@@ -196,7 +196,7 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
       
       // If email fails, still provide the token in development mode
       if (process.env.NODE_ENV === 'development') {
-        console.log(`\n🔑 Password Reset Token for ${email}: ${resetToken}\n`);
+        console.log(`\n🔑 Password Reset OTP for ${email}: ${resetToken}\n`);
         res.json({ 
           message: "Email service unavailable. For development, check console for OTP.",
           devToken: resetToken
@@ -215,13 +215,13 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
 });
 
 // @route   POST /api/auth/reset-password
-// @desc    Reset password using token
+// @desc    Reset password using OTP
 // @access  Public
 router.post('/reset-password', async (req: Request, res: Response) => {
   try {
-    const { email, token, newPassword } = req.body;
+    const { email, otp, newPassword } = req.body;
 
-    if (!email || !token || !newPassword) {
+    if (!email || !otp || !newPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -241,8 +241,8 @@ router.post('/reset-password', async (req: Request, res: Response) => {
       });
     }
 
-    // Hash the provided token
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    // Hash the provided OTP
+    const hashedToken = crypto.createHash('sha256').update(otp).digest('hex');
 
     // Find user with valid token
     const user = await User.findOne({
@@ -252,7 +252,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired reset token" });
+      return res.status(400).json({ message: "Invalid or expired reset OTP" });
     }
 
     // Hash new password
