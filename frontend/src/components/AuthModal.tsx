@@ -177,18 +177,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         transition={{ type: 'spring', duration: 0.5 }}
-        className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 relative"
+        className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] flex flex-col relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors"
+            className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors z-10"
           >
             <X size={24} />
           </button>
 
-          {/* Header */}
+          <div className="overflow-y-auto p-8 w-full custom-scrollbar">
+            {/* Header */}
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
@@ -319,16 +320,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                       {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
-                  <div className="mt-2 space-y-1">
-                    <p className="text-xs text-slate-400">Password must contain:</p>
-                    <ul className="text-xs text-slate-400 space-y-0.5 ml-4">
-                      <li className={newPassword.length >= 6 ? 'text-green-400' : ''}>• At least 6 characters</li>
-                      <li className={/[A-Z]/.test(newPassword) ? 'text-green-400' : ''}>• One uppercase letter</li>
-                      <li className={/[a-z]/.test(newPassword) ? 'text-green-400' : ''}>• One lowercase letter</li>
-                      <li className={/[0-9]/.test(newPassword) ? 'text-green-400' : ''}>• One number</li>
-                      <li className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? 'text-green-400' : ''}>• One special character (!@#$%^&*...)</li>
-                    </ul>
-                  </div>
+                  {newPassword.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      <p className="text-xs text-slate-400">Password must contain:</p>
+                      <ul className="text-xs text-slate-400 space-y-0.5 ml-4">
+                        <li className={newPassword.length >= 6 ? 'text-green-400' : ''}>• At least 6 characters</li>
+                        <li className={/[A-Z]/.test(newPassword) ? 'text-green-400' : ''}>• One uppercase letter</li>
+                        <li className={/[a-z]/.test(newPassword) ? 'text-green-400' : ''}>• One lowercase letter</li>
+                        <li className={/[0-9]/.test(newPassword) ? 'text-green-400' : ''}>• One number</li>
+                        <li className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? 'text-green-400' : ''}>• One special character (!@#$%^&*...)</li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -484,7 +487,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {!isLogin && (
+              {!isLogin && password.length > 0 && (
                 <div className="mt-2 space-y-1">
                   <p className="text-xs text-slate-400">Password must contain:</p>
                   <ul className="text-xs text-slate-400 space-y-0.5 ml-4">
@@ -644,7 +647,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
             </p>
             )}
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
       </motion.div>
   );
 };
