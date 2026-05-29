@@ -26,6 +26,7 @@ function App() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
+  const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({show: false, message: '', type: 'error'});
   const { user, logout, setUser, setToken } = useApp();
 
   // Handle OAuth callback
@@ -36,7 +37,7 @@ function App() {
     const error = params.get('error');
 
     if (error) {
-      alert('Authentication failed. Please try again.');
+      setNotification({show: true, message: 'Authentication failed. Please try again.', type: 'error'});
       window.history.replaceState({}, '', '/');
       return;
     }
@@ -220,6 +221,45 @@ function App() {
       {/* Support Modal */}
       <AnimatePresence>
         {showSupport && <SupportModal onClose={() => setShowSupport(false)} />}
+      </AnimatePresence>
+
+      {/* Notification Modal */}
+      <AnimatePresence>
+        {notification.show && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4"
+            onClick={() => setNotification({...notification, show: false})}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`bg-slate-800 border ${
+                notification.type === 'success' ? 'border-green-500/30' : 'border-red-500/30'
+              } rounded-3xl p-6 max-w-md w-full`}
+            >
+              <div className={`text-center ${
+                notification.type === 'success' ? 'text-green-400' : 'text-red-400'
+              }`}>
+                <p className="text-lg font-semibold mb-4">{notification.message}</p>
+                <button
+                  onClick={() => setNotification({...notification, show: false})}
+                  className={`px-6 py-2 rounded-xl font-semibold transition-all ${
+                    notification.type === 'success' 
+                      ? 'bg-green-500/20 hover:bg-green-500/30' 
+                      : 'bg-red-500/20 hover:bg-red-500/30'
+                  }`}
+                >
+                  OK
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Background Effects */}

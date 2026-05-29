@@ -46,7 +46,7 @@ const Notepad: React.FC = () => {
 
   const handleSave = async () => {
     if (!user) {
-      alert('Please sign in to save notes!');
+      setNotification({show: true, message: 'Please sign in to save notes!', type: 'error'});
       return;
     }
 
@@ -55,7 +55,7 @@ const Notepad: React.FC = () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
-      alert('Failed to save note');
+      setNotification({show: true, message: 'Failed to save note', type: 'error'});
     }
   };
 
