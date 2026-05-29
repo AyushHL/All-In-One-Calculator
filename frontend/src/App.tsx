@@ -136,7 +136,7 @@ function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => user ? setShowUserMenu(!showUserMenu) : setShowAuth(true)}
-                className="flex items-center gap-3 pl-2.5 pr-4 py-2 glass-morphism rounded-full hover:bg-white/10 transition-all"
+                className="flex items-center gap-2 md:gap-3 p-2 md:pl-2.5 md:pr-4 glass-morphism rounded-full hover:bg-white/10 transition-all"
               >
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shrink-0">
                   {user?.picture ? (
