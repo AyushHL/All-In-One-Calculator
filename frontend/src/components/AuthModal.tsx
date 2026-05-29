@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Mail, Lock, User, AlertCircle, Key } from 'lucide-react';
+import { X, Mail, Lock, User, AlertCircle, Key, Eye, EyeOff } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -14,17 +14,29 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const { login, register } = useApp();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    if (!isLogin && password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
 
     try {
       if (isLogin) {
@@ -47,8 +59,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setSuccess('');
     setEmail('');
     setPassword('');
+    setConfirmPassword('');
     setOtp('');
     setNewPassword('');
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+    setShowNewPassword(false);
   };
 
   const handleGoogleLogin = () => {
@@ -89,6 +105,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setSuccess('');
     setLoading(true);
 
+    if (newPassword !== confirmNewPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',
@@ -109,6 +131,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         setEmail('');
         setOtp('');
         setNewPassword('');
+        setConfirmNewPassword('');
         setSuccess('');
       }, 2000);
     } catch (err: any) {
@@ -198,9 +221,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="input-field w-full pl-12"
+                      className="input-field w-full pl-12 opacity-60 cursor-not-allowed"
                       placeholder="your@email.com"
                       required
+                      readOnly
                     />
                   </div>
                 </div>
@@ -229,14 +253,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
-                      type="password"
+                      type={showNewPassword ? 'text' : 'password'}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="input-field w-full pl-12"
+                      className="input-field w-full pl-12 pr-12"
                       placeholder="••••••••"
                       required
                       minLength={6}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
                   </div>
                   <div className="mt-2 space-y-1">
                     <p className="text-xs text-slate-400">Password must contain:</p>
@@ -248,6 +280,51 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                       <li className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? 'text-green-400' : ''}>• One special character (!@#$%^&*...)</li>
                     </ul>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Confirm New Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                    <input
+                      type={showConfirmNewPassword ? 'text' : 'password'}
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      className={`input-field w-full pl-12 pr-12 ${confirmNewPassword && newPassword !== confirmNewPassword ? 'border-red-500/50 focus:border-red-500' : confirmNewPassword && newPassword === confirmNewPassword ? 'border-green-500/50 focus:border-green-500' : ''}`}
+                      placeholder="••••••••"
+                      required
+                      minLength={6}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  {confirmNewPassword && newPassword !== confirmNewPassword && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 text-xs text-red-400 flex items-center gap-1"
+                    >
+                      <AlertCircle size={14} />
+                      Passwords do not match
+                    </motion.p>
+                  )}
+                  {confirmNewPassword && newPassword === confirmNewPassword && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 text-xs text-green-400 flex items-center gap-1"
+                    >
+                      ✓ Passwords match
+                    </motion.p>
+                  )}
                 </div>
 
                 <motion.button
@@ -341,14 +418,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field w-full pl-12"
+                  className="input-field w-full pl-12 pr-12"
                   placeholder="••••••••"
                   required
                   minLength={6}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
               {!isLogin && (
                 <div className="mt-2 space-y-1">
@@ -363,6 +448,54 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                 </div>
               )}
             </div>
+
+            {/* Confirm Password Input (Register only) */}
+            {!isLogin && (
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={`input-field w-full pl-12 pr-12 ${confirmPassword && password !== confirmPassword ? 'border-red-500/50 focus:border-red-500' : confirmPassword && password === confirmPassword ? 'border-green-500/50 focus:border-green-500' : ''}`}
+                  placeholder="••••••••"
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {confirmPassword && password !== confirmPassword && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 text-xs text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle size={14} />
+                  Passwords do not match
+                </motion.p>
+              )}
+              {confirmPassword && password === confirmPassword && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 text-xs text-green-400 flex items-center gap-1"
+                >
+                  ✓ Passwords match
+                </motion.p>
+              )}
+            </div>
+            )}
 
             {/* Submit Button */}
             <motion.button
@@ -443,6 +576,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                   setSuccess('');
                   setOtp('');
                   setNewPassword('');
+                  setConfirmNewPassword('');
+                  setShowConfirmNewPassword(false);
                 }}
                 className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
               >
