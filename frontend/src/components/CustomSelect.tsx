@@ -108,42 +108,44 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.96 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute left-0 right-0 mt-2 max-h-60 overflow-y-auto bg-slate-950/95 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-2xl p-1.5 z-50 scrollbar-thin scrollbar-thumb-slate-800"
+            className="absolute left-0 right-0 mt-2 max-h-60 flex flex-col overflow-hidden bg-slate-950/95 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-2xl z-50"
           >
-            {options.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-slate-500 text-center">No options available</div>
-            ) : (
-              options.map((option) => {
-                const isSelected = option.value === value;
-                return (
-                  <motion.div
-                    key={option.value}
-                    ref={isSelected ? selectedItemRef : null}
-                    onClick={() => {
-                      onChange(option.value);
-                      setIsOpen(false);
-                    }}
-                    whileHover={{ x: 2 }}
-                    className={`flex items-center justify-between px-4 py-2.5 my-0.5 rounded-xl cursor-pointer text-sm font-medium transition-all duration-150 ${
-                      isSelected
-                        ? styles.selectedBg
-                        : `text-slate-300 hover:text-white ${styles.hoverBg}`
-                    }`}
-                  >
-                    <span className="truncate">{option.label}</span>
-                    {isSelected && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className={`${styles.iconColor} shrink-0 ml-2`}
-                      >
-                        <Check size={16} />
-                      </motion.div>
-                    )}
-                  </motion.div>
-                );
-              })
-            )}
+            <div className="overflow-y-auto p-1.5 w-full custom-scrollbar">
+              {options.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-slate-500 text-center">No options available</div>
+              ) : (
+                options.map((option) => {
+                  const isSelected = option.value === value;
+                  return (
+                    <motion.div
+                      key={option.value}
+                      ref={isSelected ? selectedItemRef : null}
+                      onClick={() => {
+                        onChange(option.value);
+                        setIsOpen(false);
+                      }}
+                      whileHover={{ x: 2 }}
+                      className={`flex items-center justify-between px-4 py-2.5 my-0.5 rounded-xl cursor-pointer text-sm font-medium transition-all duration-150 ${
+                        isSelected
+                          ? styles.selectedBg
+                          : `text-slate-300 hover:text-white ${styles.hoverBg}`
+                      }`}
+                    >
+                      <span className="truncate">{option.label}</span>
+                      {isSelected && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className={`${styles.iconColor} shrink-0 ml-2`}
+                        >
+                          <Check size={16} />
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  );
+                })
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
