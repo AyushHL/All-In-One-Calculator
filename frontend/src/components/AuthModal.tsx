@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { X, Mail, Lock, User, AlertCircle, Key, Eye, EyeOff } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -25,7 +25,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { login, register } = useApp();
+
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,6 +80,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     window.location.href = `${API_URL}/api/auth/google`;
   };
 
+  const startCooldown = () => {
+    setResendCooldown(30);
+    if (cooldownRef.current) clearInterval(cooldownRef.current);
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownRef.current) clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -92,6 +114,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
       }
 
       setSuccess('OTP sent! Check your email.');
+      startCooldown();
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -244,6 +267,32 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                       required
                     />
                   </div>
+                  <button
+                    type="button"
+                    disabled={resendCooldown > 0 || loading}
+                    onClick={async () => {
+                      setError('');
+                      setLoading(true);
+                      try {
+                        const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email })
+                        });
+                        const data = await response.json();
+                        if (!response.ok) throw new Error(data.message || 'Failed to resend OTP');
+                        setSuccess('OTP resent! Check your email.');
+                        startCooldown();
+                      } catch (err: any) {
+                        setError(err.message || 'Failed to resend OTP');
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    className="mt-2 text-sm text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {resendCooldown > 0 ? `Resend OTP in ${resendCooldown}s` : 'Resend OTP'}
+                  </button>
                 </div>
 
                 <div>
