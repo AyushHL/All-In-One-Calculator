@@ -125,9 +125,9 @@ function App() {
             <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl md:text-3xl font-bold text-gradient"
+              className="text-2xl md:text-3xl font-bold text-gradient pl-10 md:pl-0"
             >
-              All-in-One Calculator Hub
+              All-in-One Calculator
             </motion.h1>
 
             {/* User Menu */}

@@ -52,6 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onSupportCli
     if (isMobile) setIsOpen(false);
   };
 
+  const iconSize = isMobile ? 20 : 16;
 
   return (
     <>
@@ -90,16 +91,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onSupportCli
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`
-            absolute top-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-2 border-2 border-slate-900 
+            absolute top-[22px] md:top-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-2.5 md:p-2 border-2 border-slate-900 
             hover:scale-110 active:scale-95 transition-transform z-50 shadow-lg
-            ${isMobile ? '-right-5' : '-right-3'}
+            ${isMobile ? (isOpen ? '-right-5' : '-right-12') : '-right-3'}
           `}
         >
           <motion.div
             animate={{ rotate: isOpen ? 0 : 180 }}
             transition={{ duration: 0.3 }}
           >
-            {isOpen ? <X size={16} /> : <Menu size={16} />}
+            {isOpen ? <X size={iconSize} /> : <Menu size={iconSize} />}
           </motion.div>
         </button>
 
