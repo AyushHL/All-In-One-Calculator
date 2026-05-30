@@ -15,8 +15,8 @@ import AuthModal from './components/AuthModal';
 import ProfileModal from './components/ProfileModal';
 import SupportModal from './components/SupportModal';
 import { useApp } from './context/AppContext';
+import { useOAuth } from './hooks/useOAuth';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function App() {
   const [activeTab, setActiveTab] = useState(() => {
@@ -27,53 +27,10 @@ function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({show: false, message: '', type: 'error'});
-  const { user, logout, setUser, setToken } = useApp();
+  const { user, logout } = useApp();
 
-  // Handle OAuth callback
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const email = params.get('email');
-    const error = params.get('error');
-
-    if (error) {
-      setNotification({show: true, message: 'Authentication failed. Please try again.', type: 'error'});
-      window.history.replaceState({}, '', '/');
-      return;
-    }
-
-    if (token && email) {
-      // Store token
-      localStorage.setItem('token', token);
-
-      // Set a flag to prevent infinite reload
-      const isReloading = sessionStorage.getItem('oauth_reload');
-
-      if (!isReloading) {
-        sessionStorage.setItem('oauth_reload', 'true');
-        window.location.href = '/';
-      } else {
-        sessionStorage.removeItem('oauth_reload');
-        setToken(token);
-
-        // Fetch full user data from backend
-        fetch(`${API_URL}/api/auth/user`, {
-          headers: { 'x-auth-token': token }
-        })
-          .then(res => res.json())
-          .then(userData => {
-            setUser({
-              email: userData.email,
-              notepad: userData.notepad || ''
-            });
-          })
-          .catch(err => {
-            console.error('Failed to fetch user data:', err);
-            setUser({ email: decodeURIComponent(email), notepad: '' });
-          });
-      }
-    }
-  }, [setUser, setToken]);
+  // Use Custom Hook for OAuth
+  useOAuth(setNotification);
 
   useEffect(() => {
     localStorage.setItem('activeTab', activeTab);
