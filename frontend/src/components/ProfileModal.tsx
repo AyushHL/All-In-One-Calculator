@@ -15,6 +15,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [removePictureFlag, setRemovePictureFlag] = useState(false);
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({
     show: false, message: '', type: 'success'
   });
@@ -53,6 +54,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       }
 
       setSelectedFile(file);
+      setRemovePictureFlag(false);
       
       // Create preview URL
       const reader = new FileReader();
@@ -63,40 +65,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     }
   };
 
-  const handleRemovePicture = async () => {
-    setLoading(true);
-    setNotification({ show: false, message: '', type: 'success' });
-
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(
-        '/api/auth/profile/picture',
-        {
-          headers: { 'x-auth-token': token }
-        }
-      );
-
-      setUser(response.data.user);
-      setPreviewUrl('');
-      setSelectedFile(null);
-      setNotification({
-        show: true,
-        message: 'Profile picture removed successfully!',
-        type: 'success'
-      });
-
-      setTimeout(() => {
-        setNotification({ show: false, message: '', type: 'success' });
-      }, 2000);
-    } catch (error: any) {
-      setNotification({
-        show: true,
-        message: error.response?.data?.msg || 'Failed to remove picture',
-        type: 'error'
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleRemovePicture = () => {
+    setPreviewUrl('');
+    setSelectedFile(null);
+    setRemovePictureFlag(true);
   };
 
   const handleSave = async () => {
@@ -105,6 +77,16 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
+
+      if (removePictureFlag && !selectedFile) {
+        await axios.delete(
+          '/api/auth/profile/picture',
+          {
+            headers: { 'x-auth-token': token }
+          }
+        );
+      }
+
       const formData = new FormData();
       
       if (username.trim()) {
