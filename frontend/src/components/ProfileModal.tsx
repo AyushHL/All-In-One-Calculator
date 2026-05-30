@@ -16,7 +16,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [removePictureFlag, setRemovePictureFlag] = useState(false);
-  const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({
+  const [notification, setNotification] = useState<{ show: boolean, message: string, type: 'success' | 'error' }>({
     show: false, message: '', type: 'success'
   });
 
@@ -36,7 +36,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       if (file.size > 5 * 1024 * 1024) {
         setNotification({
           show: true,
-          message: 'Image size must be less than 5MB',
+          message: 'Image Size must be Less than 5MB',
           type: 'error'
         });
         return;
@@ -47,7 +47,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       if (!allowedTypes.includes(file.type)) {
         setNotification({
           show: true,
-          message: 'Only JPEG, PNG, GIF, and WebP images are allowed',
+          message: 'Only JPEG, PNG, GIF, and WebP Images are Allowed',
           type: 'error'
         });
         return;
@@ -55,7 +55,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
 
       setSelectedFile(file);
       setRemovePictureFlag(false);
-      
+
       // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -88,11 +88,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       }
 
       const formData = new FormData();
-      
+
       if (username.trim()) {
         formData.append('username', username.trim());
       }
-      
+
       if (selectedFile) {
         formData.append('picture', selectedFile);
       }
@@ -111,7 +111,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
       setUser(response.data.user);
       setNotification({
         show: true,
-        message: 'Profile updated successfully!',
+        message: 'Profile Updated Successfully!',
         type: 'success'
       });
 
@@ -121,7 +121,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     } catch (error: any) {
       setNotification({
         show: true,
-        message: error.response?.data?.msg || 'Failed to update profile',
+        message: error.response?.data?.msg || 'Failed to Update Profile',
         type: 'error'
       });
     } finally {
@@ -145,16 +145,16 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
         className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] flex flex-col relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors z-10"
-          >
-            <X size={24} />
-          </button>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors z-10"
+        >
+          <X size={24} />
+        </button>
 
-          <div className="overflow-y-auto p-8 w-full custom-scrollbar">
-            {/* Header */}
+        <div className="overflow-y-auto p-8 w-full custom-scrollbar">
+          {/* Header */}
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
@@ -172,7 +172,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
               Edit Profile
             </h2>
             <p className="text-slate-400">
-              Customize your account details
+              Customize your Account Details
             </p>
           </div>
 
@@ -183,11 +183,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className={`mb-4 p-3 rounded-xl flex items-center gap-2 ${
-                  notification.type === 'success'
+                className={`mb-4 p-3 rounded-xl flex items-center gap-2 ${notification.type === 'success'
                     ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                     : 'bg-red-500/10 border border-red-500/20 text-red-400'
-                }`}
+                  }`}
               >
                 {notification.type === 'success' ? <Check size={20} /> : <AlertCircle size={20} />}
                 <span className="text-sm">{notification.message}</span>
@@ -222,7 +221,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="input-field w-full pl-12"
-                  placeholder="Enter your username"
+                  placeholder="Enter your Username"
                   maxLength={30}
                 />
               </div>
@@ -251,7 +250,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                       {selectedFile ? selectedFile.name : 'Click to upload image'}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
-                      JPEG, PNG, GIF, or WebP (max 5MB)
+                      JPEG, PNG, GIF, or WebP (Max 5MB)
                     </p>
                   </div>
                 </label>
@@ -272,9 +271,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                   </button>
                 </div>
                 <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-2 border-white/20">
-                  <img 
-                    src={previewUrl} 
-                    alt="Preview" 
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -305,7 +304,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
           </div>
         </div>
       </motion.div>
-      </motion.div>
+    </motion.div>
   );
 };
 

@@ -17,7 +17,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
     description: ''
   });
   const [loading, setLoading] = useState(false);
-  const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({
+  const [notification, setNotification] = useState<{ show: boolean, message: string, type: 'success' | 'error' }>({
     show: false, message: '', type: 'success'
   });
 
@@ -38,11 +38,11 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
 
       setNotification({
         show: true,
-        message: 'Support request sent successfully! We will contact you soon.',
+        message: 'Support Request Sent Successfully! We will Contact you Soon.',
         type: 'success'
       });
 
-      // Reset form
+      // Reset Form
       setFormData({
         name: '',
         mobile: '',
@@ -56,7 +56,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
     } catch (error: any) {
       setNotification({
         show: true,
-        message: error.response?.data?.message || 'Failed to send support request',
+        message: error.response?.data?.message || 'Failed to Send Support Request',
         type: 'error'
       });
     } finally {
@@ -80,16 +80,16 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
         className="glass-morphism rounded-3xl w-full max-w-md max-h-[90vh] flex flex-col relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors z-10"
-          >
-            <X size={24} />
-          </button>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors z-10"
+        >
+          <X size={24} />
+        </button>
 
-          <div className="overflow-y-auto p-8 w-full custom-scrollbar">
-            {/* Header */}
+        <div className="overflow-y-auto p-8 w-full custom-scrollbar">
+          {/* Header */}
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
@@ -103,7 +103,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
               Contact Support
             </h2>
             <p className="text-slate-400">
-              We're here to help! Send us your query
+              We're here to Help! Send us your Query
             </p>
           </div>
 
@@ -114,11 +114,10 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className={`mb-4 p-3 rounded-xl flex items-center gap-2 ${
-                  notification.type === 'success'
+                className={`mb-4 p-3 rounded-xl flex items-center gap-2 ${notification.type === 'success'
                     ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                     : 'bg-red-500/10 border border-red-500/20 text-red-400'
-                }`}
+                  }`}
               >
                 {notification.type === 'success' ? <Check size={20} /> : <AlertCircle size={20} />}
                 <span className="text-sm">{notification.message}</span>
@@ -141,7 +140,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
                   value={formData.name}
                   onChange={handleChange}
                   className="input-field w-full pl-12"
-                  placeholder="Your name"
+                  placeholder="Your Name"
                   required
                 />
               </div>
@@ -160,7 +159,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
                   value={formData.mobile}
                   onChange={handleChange}
                   className="input-field w-full pl-12"
-                  placeholder="+1 234 567 8900"
+                  placeholder="+91 XXXXX XXXXX"
                   required
                 />
               </div>
@@ -197,7 +196,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
                   value={formData.description}
                   onChange={handleChange}
                   className="input-field w-full pl-12 min-h-[120px] resize-none"
-                  placeholder="Describe your issue or query..."
+                  placeholder="Describe your Issue or Query..."
                   required
                 />
               </div>
@@ -230,7 +229,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ onClose }) => {
           </form>
         </div>
       </motion.div>
-      </motion.div>
+    </motion.div>
   );
 };
 

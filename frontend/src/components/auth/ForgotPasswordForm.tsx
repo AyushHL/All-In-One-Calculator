@@ -175,11 +175,8 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onSwitchToLogin
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                disabled
                 className="input-field w-full pl-12 opacity-60 cursor-not-allowed"
-                placeholder="your@email.com"
-                required
-                readOnly
               />
             </div>
           </div>
