@@ -19,35 +19,28 @@ export const useOAuth = (setNotification: (notif: { show: boolean, message: stri
     }
 
     if (token && email) {
-      // Store Token
+      // Clean up the URL Instantly without Reloading the Page
+      window.history.replaceState({}, '', '/');
+
+      // Store Token in localStorage and State
       localStorage.setItem('token', token);
+      setToken(token);
 
-      // Set a Flag to Prevent Infinite Reload
-      const isReloading = sessionStorage.getItem('oauth_reload');
-
-      if (!isReloading) {
-        sessionStorage.setItem('oauth_reload', 'true');
-        window.location.href = '/';
-      } else {
-        sessionStorage.removeItem('oauth_reload');
-        setToken(token);
-
-        // Fetch Full User Data from Backend
-        fetch(`${API_URL}/api/auth/user`, {
-          headers: { 'x-auth-token': token }
-        })
-          .then(res => res.json())
-          .then(userData => {
-            setUser({
-              email: userData.email,
-              notepad: userData.notepad || ''
-            });
-          })
-          .catch(err => {
-            console.error('Failed to Fetch User Data:', err);
-            setUser({ email: decodeURIComponent(email), notepad: '' });
+      // Fetch Full User Data from Backend
+      fetch(`${API_URL}/api/auth/user`, {
+        headers: { 'x-auth-token': token }
+      })
+        .then(res => res.json())
+        .then(userData => {
+          setUser({
+            email: userData.email,
+            notepad: userData.notepad || ''
           });
-      }
+        })
+        .catch(err => {
+          console.error('Failed to Fetch User Data:', err);
+          setUser({ email: decodeURIComponent(email), notepad: '' });
+        });
     }
   }, [setUser, setToken, setNotification]);
 };
