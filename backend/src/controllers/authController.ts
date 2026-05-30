@@ -12,7 +12,7 @@ export const register = async (req: Request, res: Response) => {
 
     // Validation
     if (!email || !password) {
-      return res.status(400).json({ msg: "Please Enter All Fields" });
+      return res.status(400).json({ msg: "Please Enter all Fields" });
     }
 
     // Password Validation
@@ -77,7 +77,7 @@ export const login = async (req: Request, res: Response) => {
 
     // Validation
     if (!email || !password) {
-      return res.status(400).json({ msg: "Please Enter All Fields" });
+      return res.status(400).json({ msg: "Please Enter all Fields" });
     }
 
     // Check for User
@@ -167,7 +167,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       } else {
         // In Production, if Email Fails, return Error
         res.status(500).json({
-          message: "Failed to send Reset Email. Please try again later."
+          message: "Failed to Send Reset Email. Please try again later."
         });
       }
     }
