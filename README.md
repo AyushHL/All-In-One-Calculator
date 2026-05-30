@@ -27,10 +27,13 @@ A modern, full-featured calculator application built with **MERN Stack** (MongoD
 - **Interactive** - Custom notifications, confirmation dialogs, loading states
 
 ### 🔒 Security
-- JWT token authentication (7-day expiration)
-- Password hashing with bcryptjs (10 salt rounds)
-- Protected API routes with middleware
-- Input validation and CORS configuration
+- **Helmet**: Secures Express apps by setting HTTP response headers
+- **Rate Limiting**: Global API limits (1000 requests/15 min) and strict auth limits (20 requests/hour) to prevent brute-force
+- **Mongo Sanitize**: Sanitizes user input to prevent NoSQL injection attacks
+- **JWT token authentication** (7-day expiration)
+- **Password hashing** with bcryptjs (10 salt rounds)
+- Protected API routes with custom auth middleware
+- Input validation and strict CORS configuration
 
 ## 🚀 Quick Start
 
@@ -91,8 +94,9 @@ npm run dev
 ```
 backend/
 ├── src/
-│   ├── models/        # User, History, Note schemas
-│   ├── routes/        # API endpoints (auth, history, notes, notepad, support)
+│   ├── controllers/   # Business logic (auth, history, notes, notepad)
+│   ├── models/        # Mongoose schemas (User, History, Note)
+│   ├── routes/        # API route definitions
 │   ├── middleware/    # JWT authentication
 │   ├── config/        # Database & Passport configuration
 │   ├── utils/         # Email service
@@ -104,6 +108,7 @@ frontend/
 ├── src/
 │   ├── components/    # Calculators, Auth, Profile, Notes, History
 │   ├── context/       # Global state management
+│   ├── hooks/         # Custom React hooks (useOAuth)
 │   └── App.tsx        # Main component
 └── vite.config.ts     # Vite configuration
 ```
