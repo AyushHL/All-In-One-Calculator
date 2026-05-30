@@ -220,7 +220,3 @@ npm install
 ## 📄 License
 
 MIT License - Free to use for learning and development
-
----
-
-Built with ❤️ using TypeScript and MERN Stack
