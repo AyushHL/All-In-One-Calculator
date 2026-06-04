@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, LogOut, Settings } from 'lucide-react';
 import Sidebar from './components/Sidebar';
@@ -14,14 +15,12 @@ import Notepad from './components/Notepad';
 import AuthModal from './components/AuthModal';
 import ProfileModal from './components/ProfileModal';
 import SupportModal from './components/SupportModal';
+import PageMeta from './components/PageMeta';
 import { useApp } from './context/AppContext';
 import { useOAuth } from './hooks/useOAuth';
 
 
 function App() {
-  const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem('activeTab') || 'basic';
-  });
   const [showAuth, setShowAuth] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -31,33 +30,6 @@ function App() {
 
   // Use Custom Hook for OAuth
   useOAuth(setNotification);
-
-  useEffect(() => {
-    localStorage.setItem('activeTab', activeTab);
-  }, [activeTab]);
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'basic':
-        return <BasicCalculator />;
-      case 'scientific':
-        return <Scientific />;
-      case 'bmi':
-        return <BMICalculator />;
-      case 'age':
-        return <AgeCalculator />;
-      case 'converter':
-        return <Converter />;
-      case 'numbersystem':
-        return <NumberSystemConverter />;
-      case 'savednotes':
-        return <SavedNotes />;
-      case 'history':
-        return <History />;
-      default:
-        return <BasicCalculator />;
-    }
-  };
 
   const handleLogout = () => {
     logout();
@@ -72,7 +44,7 @@ function App() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onSupportClick={() => setShowSupport(true)} />
+      <Sidebar onSupportClick={() => setShowSupport(true)} />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
@@ -141,20 +113,92 @@ function App() {
             </div>
           </header>
 
-          {/* Calculator Content */}
+          {/* Calculator Content — URL-based routing */}
           <div className="flex-1 overflow-y-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="h-full"
-              >
-                {renderContent()}
-              </motion.div>
-            </AnimatePresence>
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <PageMeta 
+                    title="All-in-One Calculator Hub — Basic Calculator" 
+                    description="Free online basic calculator with a modern interface. Perform addition, subtraction, multiplication, division and more." 
+                  />
+                  <BasicCalculator />
+                </>
+              } />
+              <Route path="/scientific-calculator" element={
+                <>
+                  <PageMeta 
+                    title="Scientific Calculator — All-in-One Calculator Hub" 
+                    description="Free online scientific calculator with trigonometric, logarithmic, exponential functions and more. Perfect for students and professionals." 
+                  />
+                  <Scientific />
+                </>
+              } />
+              <Route path="/age-calculator" element={
+                <>
+                  <PageMeta 
+                    title="Age Calculator — All-in-One Calculator Hub" 
+                    description="Calculate your exact age in years, months, and days. Find the time between two dates with our free online age calculator." 
+                  />
+                  <AgeCalculator />
+                </>
+              } />
+              <Route path="/bmi-calculator" element={
+                <>
+                  <PageMeta 
+                    title="BMI Calculator — All-in-One Calculator Hub" 
+                    description="Calculate your Body Mass Index (BMI) instantly. Check if you're underweight, normal, overweight, or obese with our free BMI calculator." 
+                  />
+                  <BMICalculator />
+                </>
+              } />
+              <Route path="/unit-converter" element={
+                <>
+                  <PageMeta 
+                    title="Unit Converter — All-in-One Calculator Hub" 
+                    description="Convert between units of length, weight, temperature, volume, and more. Free online unit conversion tool." 
+                  />
+                  <Converter />
+                </>
+              } />
+              <Route path="/number-system-converter" element={
+                <>
+                  <PageMeta 
+                    title="Number System Converter — All-in-One Calculator Hub" 
+                    description="Convert between binary, decimal, octal, and hexadecimal number systems. Free online number base converter." 
+                  />
+                  <NumberSystemConverter />
+                </>
+              } />
+              <Route path="/saved-notes" element={
+                <>
+                  <PageMeta 
+                    title="Saved Notes — All-in-One Calculator Hub" 
+                    description="View and manage your saved calculation notes. Keep track of important results and formulas." 
+                  />
+                  <SavedNotes />
+                </>
+              } />
+              <Route path="/history" element={
+                <>
+                  <PageMeta 
+                    title="History — All-in-One Calculator Hub" 
+                    description="View your calculation history. Review past calculations and results across all calculator tools." 
+                  />
+                  <History />
+                </>
+              } />
+              {/* Fallback — redirect unknown routes to home */}
+              <Route path="*" element={
+                <>
+                  <PageMeta 
+                    title="All-in-One Calculator Hub — Basic Calculator" 
+                    description="Free online basic calculator with a modern interface. Perform addition, subtraction, multiplication, division and more." 
+                  />
+                  <BasicCalculator />
+                </>
+              } />
+            </Routes>
           </div>
         </div>
 

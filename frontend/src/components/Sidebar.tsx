@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Menu, 
@@ -14,12 +15,22 @@ import {
 } from 'lucide-react';
 
 interface SidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
   onSupportClick: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onSupportClick }) => {
+const menuItems = [
+  { id: 'basic', path: '/', label: 'Basic Calculator', icon: Calculator, color: 'from-slate-500 to-gray-600' },
+  { id: 'scientific', path: '/scientific-calculator', label: 'Scientific', icon: Calculator, color: 'from-blue-500 to-cyan-500' },
+  { id: 'age', path: '/age-calculator', label: 'Age Calculator', icon: Calendar, color: 'from-purple-500 to-pink-500' },
+  { id: 'bmi', path: '/bmi-calculator', label: 'BMI Calculator', icon: Activity, color: 'from-green-500 to-emerald-500' },
+  { id: 'converter', path: '/unit-converter', label: 'Converter', icon: ChevronRight, color: 'from-orange-500 to-red-500' },
+  { id: 'numbersystem', path: '/number-system-converter', label: 'Number System', icon: Hash, color: 'from-indigo-500 to-purple-500' },
+  { id: 'savednotes', path: '/saved-notes', label: 'Saved Notes', icon: StickyNote, color: 'from-yellow-500 to-amber-500' },
+  { id: 'history', path: '/history', label: 'History', icon: HistoryIcon, color: 'from-rose-500 to-pink-500' },
+];
+
+const Sidebar: React.FC<SidebarProps> = ({ onSupportClick }) => {
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(() => 
     typeof window !== 'undefined' ? window.innerWidth < 768 : false
   );
@@ -36,19 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onSupportCli
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const menuItems = [
-    { id: 'basic', label: 'Basic Calculator', icon: Calculator, color: 'from-slate-500 to-gray-600' },
-    { id: 'scientific', label: 'Scientific', icon: Calculator, color: 'from-blue-500 to-cyan-500' },
-    { id: 'age', label: 'Age Calculator', icon: Calendar, color: 'from-purple-500 to-pink-500' },
-    { id: 'bmi', label: 'BMI Calculator', icon: Activity, color: 'from-green-500 to-emerald-500' },
-    { id: 'converter', label: 'Converter', icon: ChevronRight, color: 'from-orange-500 to-red-500' },
-    { id: 'numbersystem', label: 'Number System', icon: Hash, color: 'from-indigo-500 to-purple-500' },
-    { id: 'savednotes', label: 'Saved Notes', icon: StickyNote, color: 'from-yellow-500 to-amber-500' },
-    { id: 'history', label: 'History', icon: HistoryIcon, color: 'from-rose-500 to-pink-500' },
-  ];
-
-  const handleTabClick = (id: string) => {
-    setActiveTab(id);
+  const handleTabClick = () => {
     if (isMobile) setIsOpen(false);
   };
 
@@ -134,38 +133,38 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onSupportCli
         <nav className="flex-1 space-y-2 overflow-y-auto overflow-x-hidden scrollbar-hide">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = location.pathname === item.path;
 
             return (
-              <motion.button
-                key={item.id}
-                onClick={() => handleTabClick(item.id)}
-                whileHover={{ scale: 1.02, x: 5 }}
-                whileTap={{ scale: 0.98 }}
-                className={`
-                  w-full flex items-center gap-4 p-3 rounded-xl transition-all duration-200
-                  ${isActive 
-                    ? `bg-gradient-to-r ${item.color} shadow-lg` 
-                    : 'hover:bg-white/5'
-                  }
-                  ${!isOpen && !isMobile ? 'justify-center' : ''}
-                `}
-                title={!isOpen ? item.label : ''}
-              >
-                <Icon size={22} className="flex-shrink-0" />
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.span
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      className="font-medium text-sm whitespace-nowrap"
-                    >
-                      {item.label}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+              <Link key={item.id} to={item.path} onClick={handleTabClick}>
+                <motion.div
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`
+                    w-full flex items-center gap-4 p-3 rounded-xl transition-all duration-200
+                    ${isActive 
+                      ? `bg-gradient-to-r ${item.color} shadow-lg` 
+                      : 'hover:bg-white/5'
+                    }
+                    ${!isOpen && !isMobile ? 'justify-center' : ''}
+                  `}
+                  title={!isOpen ? item.label : ''}
+                >
+                  <Icon size={22} className="flex-shrink-0" />
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="font-medium text-sm whitespace-nowrap"
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </Link>
             );
           })}
         </nav>

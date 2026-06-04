@@ -8,6 +8,16 @@ export default defineConfig({
     react(),
     Sitemap({
       hostname: 'https://www.allinonecalculator.online',
+      dynamicRoutes: [
+        '/',
+        '/scientific-calculator',
+        '/age-calculator',
+        '/bmi-calculator',
+        '/unit-converter',
+        '/number-system-converter',
+        '/saved-notes',
+        '/history',
+      ],
       robots: [{
         userAgent: '*',
         disallow: ['/atom.xml', '/feeds/', '/search']
