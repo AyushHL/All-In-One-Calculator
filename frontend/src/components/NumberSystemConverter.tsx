@@ -131,7 +131,7 @@ const NumberSystemConverter: React.FC = () => {
           onChange={setFromBase}
           options={numberSystems}
           theme="indigo"
-          className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-indigo-500/50 transition-all"
+          className="input-field w-full text-lg"
         />
       </motion.div>
 
@@ -148,7 +148,7 @@ const NumberSystemConverter: React.FC = () => {
           value={inputValue}
           onChange={handleInputChange}
           placeholder={getPlaceholder()}
-          className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-2xl text-white text-lg font-mono focus:outline-none focus:border-indigo-500/50 transition-all"
+          className="input-field w-full text-lg font-mono"
         />
       </motion.div>
 
@@ -182,7 +182,7 @@ const NumberSystemConverter: React.FC = () => {
           onChange={setToBase}
           options={numberSystems}
           theme="indigo"
-          className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-purple-500/50 transition-all"
+          className="input-field w-full text-lg"
         />
       </motion.div>
 

@@ -15,6 +15,7 @@ export default defineConfig({
         '/bmi-calculator',
         '/unit-converter',
         '/number-system-converter',
+        '/cgpa-calculator',
         '/saved-notes',
         '/history',
       ],

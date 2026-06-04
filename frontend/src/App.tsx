@@ -9,6 +9,7 @@ import BMICalculator from './components/BMICalculator';
 import AgeCalculator from './components/AgeCalculator';
 import Converter from './components/Converter';
 import NumberSystemConverter from './components/NumberSystemConverter';
+import CGPACalculator from './components/CGPACalculator';
 import SavedNotes from './components/SavedNotes';
 import History from './components/History';
 import Notepad from './components/Notepad';
@@ -168,6 +169,15 @@ function App() {
                     description="Convert between binary, decimal, octal, and hexadecimal number systems. Free online number base converter." 
                   />
                   <NumberSystemConverter />
+                </>
+              } />
+              <Route path="/cgpa-calculator" element={
+                <>
+                  <PageMeta 
+                    title="CGPA Calculator — All-in-One Calculator Hub" 
+                    description="Calculate your CGPA using DTU (credit-weighted) or normal formulas. Free online CGPA calculator." 
+                  />
+                  <CGPACalculator />
                 </>
               } />
               <Route path="/saved-notes" element={

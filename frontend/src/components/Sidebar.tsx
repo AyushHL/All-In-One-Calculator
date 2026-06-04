@@ -11,7 +11,8 @@ import {
   ChevronRight,
   Hash,
   StickyNote,
-  Headphones
+  Headphones,
+  GraduationCap
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -25,6 +26,7 @@ const menuItems = [
   { id: 'bmi', path: '/bmi-calculator', label: 'BMI Calculator', icon: Activity, color: 'from-green-500 to-emerald-500' },
   { id: 'converter', path: '/unit-converter', label: 'Converter', icon: ChevronRight, color: 'from-orange-500 to-red-500' },
   { id: 'numbersystem', path: '/number-system-converter', label: 'Number System', icon: Hash, color: 'from-indigo-500 to-purple-500' },
+  { id: 'cgpa', path: '/cgpa-calculator', label: 'CGPA Calculator', icon: GraduationCap, color: 'from-emerald-500 to-teal-500' },
   { id: 'savednotes', path: '/saved-notes', label: 'Saved Notes', icon: StickyNote, color: 'from-yellow-500 to-amber-500' },
   { id: 'history', path: '/history', label: 'History', icon: HistoryIcon, color: 'from-rose-500 to-pink-500' },
 ];
